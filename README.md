@@ -1,5 +1,7 @@
 # Refurbished Business Management System (Built on ERPNext)
 
+Email: jigar@khatavahi.in
+
 ## 🚀 Overview
 
 This project is a **customized ERP solution built on top of [ERPNext](https://erpnext.com/)** — a robust open-source ERP platform. Our aim is to provide a **refined, optimized, and industry-specific business management system** for SMEs with enhanced UI/UX, tailored workflows, and extended functionality.
