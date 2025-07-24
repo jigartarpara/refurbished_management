@@ -13,21 +13,22 @@ class RefurbOrder(Document):
 			self.create_tasks()
 	
 	def get_cost(self):
-		cost = frappe.db.sql("""
-			SELECT bundle.avg_rate 
-			FROM 
-				`tabSerial and Batch Bundle` as bundle,
-				`tabSerial and Batch Entry` as entry
-			WHERE 
-				bundle.name = entry.parent
-				AND bundle.type_of_transaction = "Inward"
-				AND bundle.item_code = %s
-				and entry.serial_no = %s
-		""", (self.item,self.serial_no), as_dict=True)
-		if cost:
-			self.cost = cost[0].avg_rate
-		else:
-			self.cost = 0.0
+		if self.has_serial_no:
+			cost = frappe.db.sql("""
+				SELECT bundle.avg_rate 
+				FROM 
+					`tabSerial and Batch Bundle` as bundle,
+					`tabSerial and Batch Entry` as entry
+				WHERE 
+					bundle.name = entry.parent
+					AND bundle.type_of_transaction = "Inward"
+					AND bundle.item_code = %s
+					and entry.serial_no = %s
+			""", (self.item,self.serial_no), as_dict=True)
+			if cost:
+				self.cost = cost[0].avg_rate
+			else:
+				self.cost = 0.0
 
 	def create_tasks(self):
 		if self.ro_task_template:

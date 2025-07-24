@@ -1,33 +1,68 @@
-### Refurbished Management
+# Refurbished Business Management System (Built on ERPNext)
 
-Refurbished Management
+## 🚀 Overview
 
-### Installation
+This project is a **customized ERP solution built on top of [ERPNext](https://erpnext.com/)** — a robust open-source ERP platform. Our aim is to provide a **refined, optimized, and industry-specific business management system** for SMEs with enhanced UI/UX, tailored workflows, and extended functionality.
 
-You can install this app using the [bench](https://github.com/frappe/bench) CLI:
+> ✅ Best suited for industries like **textile**, **manufacturing**, **retail**, and **service businesses**.
 
-```bash
-cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch develop
-bench install-app refurbished_management
-```
+---
 
-### Contributing
+## ✨ What's New in This Refurbished ERP
 
-This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:
+### ✅ UI/UX Enhancements
+- Modern, responsive design (Tailwind CSS)
+- Mobile-friendly interfaces
+- Custom dashboards for quick insights
 
-```bash
-cd apps/refurbished_management
-pre-commit install
-```
+### 📦 Industry-Specific Modules
+- Textile management extensions (Loom, Yarn, Grey Cloth)
+- Manufacturing BOM enhancements
+- GST-ready invoicing (India-focused)
 
-Pre-commit is configured to use the following tools for checking and formatting your code:
+### 🔧 Backend Improvements
+- Optimized performance and queries
+- Custom Doctypes and Scripts
+- Advanced Role-Based Permissions (RBAC)
 
-- ruff
-- eslint
-- prettier
-- pyupgrade
+### 📊 Advanced Reporting
+- Real-time KPI dashboards
+- Custom financial and inventory reports
+- Export to Excel, PDF
 
-### License
+### 🔗 Integrations
+- WhatsApp/SMS Notifications
+- Payment Gateway Integration (Razorpay, Stripe)
+- E-invoicing & GST Portal Integration (India)
 
-mit
+---
+
+## ⚙️ Technology Stack
+
+| Component     | Tool/Framework                         |
+|---------------|----------------------------------------|
+| Core ERP      | ERPNext (Frappe Framework)             |
+| Frontend UI   | Tailwind CSS, Custom JS                |
+| Backend       | Python, Frappe                         |
+| Database      | MariaDB                                |
+| Hosting       | Docker, Nginx, Supervisor, Redis       |
+| Deployment    | Self-hosted / Cloud (DigitalOcean, AWS)|
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+- Bench CLI (Frappe/ERPNext)
+- Docker (optional for containerized setup)
+- Node.js, Yarn, Redis, MariaDB
+
+### Clone Repository
+
+# Setup Bench and install dependencies
+bench init my-bench --frappe-branch version-15
+cd my-bench
+bench get-app https://github.com/jigartarpara/refurbished_management.git
+bench new-site yoursite.local
+bench --site yoursite.local install-app refurbished_management
+bench start

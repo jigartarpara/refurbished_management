@@ -15,8 +15,7 @@ def setup_custom_fields():
 		"Task": [
 			dict(fieldname='refurb_order',
 				label='Refurb Order',
-				fieldtype='Link',
-				options='Refurb Order',
+				fieldtype='Data',
 				insert_after='subject',
 				set_only_once=True
 			)
