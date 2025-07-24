@@ -8,9 +8,16 @@
  "field_order": [
   "naming_series",
   "item",
+  "ro_task_template",
+  "task_created",
   "column_break_sxqt",
   "has_serial_no",
-  "serial_no"
+  "serial_no",
+  "cost",
+  "column_break_hpur",
+  "fg_item",
+  "section_break_uugc",
+  "material_transfer"
  ],
  "fields": [
   {
@@ -49,12 +56,62 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series"
+  },
+  {
+   "fieldname": "cost",
+   "fieldtype": "Float",
+   "label": "Cost",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_uugc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "material_transfer",
+   "fieldtype": "HTML",
+   "label": "Material Transfer"
+  },
+  {
+   "fetch_from": "item.task_template",
+   "fieldname": "ro_task_template",
+   "fieldtype": "Link",
+   "label": "RO Task Template",
+   "options": "RO Task Template",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "task_created",
+   "fieldtype": "Check",
+   "label": "Task Created",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_hpur",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "item.refurb_fg_item",
+   "fieldname": "fg_item",
+   "fieldtype": "Link",
+   "label": "FG Item",
+   "options": "Item"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2025-07-24 11:37:38.913327",
+ "links": [
+  {
+   "link_doctype": "Stock Entry",
+   "link_fieldname": "refurb_order"
+  },
+  {
+   "link_doctype": "Task",
+   "link_fieldname": "refurb_order"
+  }
+ ],
+ "modified": "2025-07-24 16:24:08.770041",
  "modified_by": "Administrator",
  "module": "Refurbished Management",
  "name": "Refurb Order",
