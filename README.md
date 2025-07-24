@@ -1,6 +1,7 @@
 # Refurbished Business Management System (Built on ERPNext)
 
 Email: jigar@khatavahi.in
+[More Info](https://explorewithjnk.com/blog/2025/07/24/%f0%9f%9a%80-refurbished-business-management-system-built-on-erpnext-for-indian-smes/)
 
 ## 🚀 Overview
 
