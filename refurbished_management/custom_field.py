@@ -10,7 +10,7 @@ def setup_custom_fields():
 				options='Refurb Order',
 				insert_after='work_order',
 				set_only_once=True
-			),
+			)
 		],
 		"Task": [
 			dict(fieldname='refurb_order',
@@ -60,3 +60,13 @@ def setup_custom_fields():
 		frappe.db.commit()
 	except:
 		print("Exception while createing customfield")
+	
+	setup_stock_entry_type()
+
+def setup_stock_entry_type():
+	stock_entry_type = ["Transfer For Refubishment", "Return From Refurbishment", "Transfer Device For Refurbishment", "Return Device From Refurbishment"]
+	for se_type in stock_entry_type:
+		se_type_id = frappe.db.get_value("Stock Entry Type", se_type, "name")
+		if not se_type_id:
+			ste_type = frappe.get_doc({"doctype": "Stock Entry Type", "name": se_type, "purpose": "Material Transfer"})
+			ste_type.insert()
