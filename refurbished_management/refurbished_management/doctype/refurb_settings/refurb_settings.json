@@ -7,6 +7,7 @@
  "field_order": [
   "rm_warehouse",
   "wip_warehouse",
+  "column_break_lxyv",
   "fg_warehouse",
   "scrap_warehouse"
  ],
@@ -41,13 +42,17 @@
    "label": "Scrap Warehouse",
    "options": "Warehouse",
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_lxyv",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-07-25 15:20:29.266852",
+ "modified": "2025-07-25 17:27:01.309078",
  "modified_by": "Administrator",
  "module": "Refurbished Management",
  "name": "Refurb Settings",
