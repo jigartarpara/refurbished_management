@@ -7,7 +7,7 @@
     {% for item in final_data %}
         <tr>
             <td>{{ item.item_code }}</td>
-            <td><b>{{ item.serial_no }}</b></td>
+            <td><b><a href="/app/serial-no/{{ item.serial_no }}" data-doctype="Serial No" data-name="{{ item.serial_no }}" data-value="{{ item.serial_no }}">{{ item.serial_no }}</a></b></td>
             <td>{{ item.qty }}</td>
         </tr>
     {% endfor %}
@@ -19,6 +19,22 @@
         <tr>
             <td colspan="3" class="bg-success text-center"><b>FG Entry Done.</b></td>
         </tr>
+        <tr>
+            <td>{{ fg_item }}</td>
+            <td><b><a href="/app/serial-no/{{ fg_serial_no }}" data-doctype="Serial No" data-name="{{ fg_serial_no }}" data-value="{{ fg_serial_no }}">{{ fg_serial_no }}</a></b></td>
+            <td>1</td>
+        </tr>
+        {% for scrap in scrap_item %}
+            <tr>
+                <td>{{ scrap.item_code }}</td>
+                <td>
+                    {% if scrap.serial_no %}
+                        <b><a href="/app/serial-no/{{ scrap.serial_no }}" data-doctype="Serial No" data-name="{{ scrap.serial_no }}" data-value="{{ scrap.serial_no }}">{{ scrap.serial_no }}</a></b>
+                    {% endif %}
+                </td>
+                <td>{{ scrap.qty }}</td>
+            </tr>
+        {% endfor %}
     {% else %}
         <tr>
             <td colspan="3" class="bg-danger text-center"><b>FG Entry Pending.</b></td>

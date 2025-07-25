@@ -19,7 +19,10 @@ class RefurbOrder(Document):
         self.set_onload("net_transfer_stock", frappe.render_template('refurbished_management/templates/issue_materials.html', {
             'final_data': self.get_net_transfer(),
             'manufacturing': manufacturing,
-            'device_transfer': True if transfer > 0 else False
+            'device_transfer': True if transfer > 0 else False,
+            'fg_item': self.fg_item,
+            'fg_serial_no': self.fg_serial_no,
+            'scrap_item': self.scrap_item,
         }))
         
         self.set_onload("manufacturing",True if manufacturing else False)
@@ -73,7 +76,7 @@ class RefurbOrder(Document):
     def validate(self):
         manufacturing = frappe.db.get_value("Stock Entry",{"docstatus":1,"stock_entry_type":"Manufacture", "refurb_order":self.name}, "name" )
         if manufacturing:
-            frappe.throw("Changes Not Allowed After Manufacturing Entry.")
+            frappe.msgprint("Manufacturing Entry Already Done for this Refurb Order: " + manufacturing + ". Changes will not reflect in stock entry.")
         if not self.cost:
             self.get_cost()
         if not self.task_created:
