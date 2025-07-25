@@ -17,7 +17,6 @@ class RefurbOrder(Document):
         result = {}
         result["device_transfer_entry"] = True if transfer > 0 else False
         result["net_transfer_stock"] = self.get_net_transfer()
-
         return result
     
     def get_net_transfer(self):
