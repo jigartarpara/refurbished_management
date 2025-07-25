@@ -15,11 +15,12 @@
   "cost",
   "column_break_sxqt",
   "fg_item",
+  "fg_serial_no",
   "has_serial_no",
   "task_created",
   "ro_task_template",
   "section_break_uugc",
-  "material_transfer"
+  "scrap_item"
  ],
  "fields": [
   {
@@ -71,11 +72,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "material_transfer",
-   "fieldtype": "HTML",
-   "label": "Material Transfer"
-  },
-  {
    "fetch_from": "item.task_template",
    "fieldname": "ro_task_template",
    "fieldtype": "Link",
@@ -113,6 +109,17 @@
   {
    "fieldname": "section_break_heuy",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "fg_serial_no",
+   "fieldtype": "Data",
+   "label": "FG Serial No"
+  },
+  {
+   "fieldname": "scrap_item",
+   "fieldtype": "Table",
+   "label": "Scrap Item",
+   "options": "Scrap Item"
   }
  ],
  "grid_page_length": 50,
@@ -127,7 +134,7 @@
    "link_fieldname": "refurb_order"
   }
  ],
- "modified": "2025-07-25 12:02:40.097543",
+ "modified": "2025-07-25 15:17:42.788095",
  "modified_by": "Administrator",
  "module": "Refurbished Management",
  "name": "Refurb Order",

@@ -51,7 +51,10 @@ frappe.ui.form.on("Refurb Order", {
         frm.add_custom_button(
             __("FG Entry For Refurbshing"),
             function () {
-                
+                frappe.model.open_mapped_doc({
+                    method: "refurbished_management.refurbished_management.doctype.refurb_order.refurb_order.make_fg_entry",
+                    frm: cur_frm,
+                });
             },
             "Final Entry"
         );

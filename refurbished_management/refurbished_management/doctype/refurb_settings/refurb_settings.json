@@ -7,7 +7,8 @@
  "field_order": [
   "rm_warehouse",
   "wip_warehouse",
-  "fg_warehouse"
+  "fg_warehouse",
+  "scrap_warehouse"
  ],
  "fields": [
   {
@@ -33,13 +34,20 @@
    "label": "Finish Goods Warehouse",
    "options": "Warehouse",
    "reqd": 1
+  },
+  {
+   "fieldname": "scrap_warehouse",
+   "fieldtype": "Link",
+   "label": "Scrap Warehouse",
+   "options": "Warehouse",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-07-25 11:59:39.108478",
+ "modified": "2025-07-25 15:20:29.266852",
  "modified_by": "Administrator",
  "module": "Refurbished Management",
  "name": "Refurb Settings",
