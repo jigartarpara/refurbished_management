@@ -1,0 +1,14 @@
+<table class="table table-bordered ">
+    <tr>
+        <th>Item Code</th>
+        <th>Serial No</th>
+        <th>Qty</th>
+    </tr>
+    {% for item in final_data %}
+        <tr>
+            <td>{{ item.item_code }}</td>
+            <td><b>{{ item.serial_no }}</b></td>
+            <td>{{ item.qty }}</td>
+        </tr>
+    {% endfor %}
+</table>

@@ -8,20 +8,57 @@ from frappe.model.mapper import get_mapped_doc
 
 class RefurbOrder(Document):
     def onload(self):
-        self.set_onload("stock_transfer", self.get_stock_transfer_data())
+        self.get_stock_transfer_data()
     
     def get_stock_transfer_data(self):
         device_transfer_entry = frappe.db.get_all("Stock Entry", {"docstatus":1,"stock_entry_type":"Transfer Device For Refurbishment", "refurb_order":self.name}, "name")
         device_return_entry = frappe.db.get_all("Stock Entry", {"docstatus":1,"stock_entry_type":"Return Device From Refurbishment", "refurb_order":self.name}, "name")
         transfer = len(device_transfer_entry) - len(device_return_entry)
         result = {}
-        result["device_transfer_entry"] = True if transfer > 0 else False
-        result["net_transfer_stock"] = self.get_net_transfer()
-        
-        return result
+        self.set_onload("device_transfer_entry", True if transfer > 0 else False)
+        self.set_onload("net_transfer_stock", frappe.render_template('refurbished_management/templates/issue_materials.html', {'final_data': self.get_net_transfer()}))
     
     def get_net_transfer(self):
-        pass
+        transfer_entry_type = ["Transfer For Refubishment", "Transfer Device For Refurbishment"]
+        return_entry_type = ["Return From Refurbishment", "Return Device From Refurbishment"]
+        transfer_entry = frappe.db.sql("""
+            SELECT 
+                item.item_code, item.qty,item.serial_no, se.stock_entry_type
+            from
+                `tabStock Entry Detail` as item,
+                `tabStock Entry` as se
+            WHERE
+                item.parent = se.name
+                AND se.docstatus = 1
+                AND se.refurb_order = %s
+                                
+        """, (self.name), as_dict=True)
+        net_qty = {}
+        for row in transfer_entry:
+            if row.stock_entry_type in transfer_entry_type:
+                temp_data = net_qty.get(row.item_code, {})
+                temp_data["qty"] = temp_data.get("qty", 0) + row.qty
+                serial_no = temp_data.get("serial_no", [])
+                if row.serial_no and row.serial_no not in serial_no:
+                    serial_no.append(row.serial_no)
+                temp_data["serial_no"] = serial_no
+                net_qty[row.item_code] = temp_data
+            elif row.stock_entry_type in return_entry_type:
+                temp_data = net_qty.get(row.item_code, {})
+                temp_data["qty"] = temp_data.get("qty", 0) - row.qty
+                serial_no = temp_data.get("serial_no", [])
+                if row.serial_no and row.serial_no in serial_no:
+                    serial_no.remove(row.serial_no)
+                temp_data["serial_no"] = serial_no
+                net_qty[row.item_code] = temp_data
+        final_data = []
+        for item_code, data in net_qty.items():
+            final_data.append({
+                "item_code": item_code,
+                "serial_no": ", ".join(data.get("serial_no", [])),
+                "qty": data.get("qty", 0),
+            })
+        return final_data
     
     def validate(self):
         if not self.cost:
@@ -59,6 +96,59 @@ class RefurbOrder(Document):
                 new_task.insert()
             
             self.task_created = True
+
+@frappe.whitelist()
+def make_part_return(source_name,target_doc=None):
+    def set_missing_values(source, target):
+        rm_warehouse = frappe.db.get_single_value("Refurb Settings", "rm_warehouse")
+        wip_warehouse = frappe.db.get_single_value("Refurb Settings", "wip_warehouse")
+        
+        refurb_order = frappe.get_doc("Refurb Order", source_name)
+        target.stock_entry_type = "Return From Refurbishment"
+        target.device_transfer_entry = True
+        target.from_warehouse = wip_warehouse 
+        target.to_warehouse = rm_warehouse
+        target.run_method("set_missing_values")
+        
+
+    doclist = get_mapped_doc("Refurb Order", source_name,
+    {
+        "Refurb Order": {
+            "doctype": "Stock Entry",
+            "field_map": {
+                "name":"refurb_order",
+            }
+        },
+
+    }, target_doc,set_missing_values)
+
+    return doclist
+@frappe.whitelist()
+def make_part_trasnfer(source_name,target_doc=None):
+    def set_missing_values(source, target):
+        rm_warehouse = frappe.db.get_single_value("Refurb Settings", "rm_warehouse")
+        wip_warehouse = frappe.db.get_single_value("Refurb Settings", "wip_warehouse")
+        
+        refurb_order = frappe.get_doc("Refurb Order", source_name)
+        target.stock_entry_type = "Transfer For Refubishment"
+        target.device_transfer_entry = True
+        target.from_warehouse = rm_warehouse  
+        target.to_warehouse = wip_warehouse
+        target.run_method("set_missing_values")
+        
+
+    doclist = get_mapped_doc("Refurb Order", source_name,
+    {
+        "Refurb Order": {
+            "doctype": "Stock Entry",
+            "field_map": {
+                "name":"refurb_order",
+            }
+        },
+
+    }, target_doc,set_missing_values)
+
+    return doclist
 
 @frappe.whitelist()
 def make_return_device(source_name,target_doc=None):
