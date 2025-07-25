@@ -11,4 +11,17 @@
             <td>{{ item.qty }}</td>
         </tr>
     {% endfor %}
+    {% if not device_transfer %}
+        <tr>
+            <td colspan="3" class="bg-warning text-center"><b>Device Transfer Pending</b></td>
+        </tr>
+    {% elif manufacturing %}
+        <tr>
+            <td colspan="3" class="bg-success text-center"><b>FG Entry Done.</b></td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="3" class="bg-danger text-center"><b>FG Entry Pending.</b></td>
+        </tr>
+    {% endif %}
 </table>

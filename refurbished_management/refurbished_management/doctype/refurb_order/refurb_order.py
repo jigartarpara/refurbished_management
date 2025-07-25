@@ -13,9 +13,20 @@ class RefurbOrder(Document):
     def get_stock_transfer_data(self):
         device_transfer_entry = frappe.db.get_all("Stock Entry", {"docstatus":1,"stock_entry_type":"Transfer Device For Refurbishment", "refurb_order":self.name}, "name")
         device_return_entry = frappe.db.get_all("Stock Entry", {"docstatus":1,"stock_entry_type":"Return Device From Refurbishment", "refurb_order":self.name}, "name")
+        manufacturing = frappe.db.get_value("Stock Entry",{"docstatus":1,"stock_entry_type":"Manufacture", "refurb_order":self.name}, "name" )
         transfer = len(device_transfer_entry) - len(device_return_entry)
         self.set_onload("device_transfer_entry", True if transfer > 0 else False)
-        self.set_onload("net_transfer_stock", frappe.render_template('refurbished_management/templates/issue_materials.html', {'final_data': self.get_net_transfer()}))
+        self.set_onload("net_transfer_stock", frappe.render_template('refurbished_management/templates/issue_materials.html', {
+            'final_data': self.get_net_transfer(),
+            'manufacturing': manufacturing,
+            'device_transfer': True if transfer > 0 else False
+        }))
+        
+        self.set_onload("manufacturing",True if manufacturing else False)
+        draft_manufacturing = frappe.db.get_value("Stock Entry",{"docstatus":0,"stock_entry_type":"Manufacture", "refurb_order":self.name}, "name" )
+        self.set_onload("draft_manufacturing",draft_manufacturing if draft_manufacturing else False)
+        
+
     
     def get_net_transfer(self):
         transfer_entry_type = ["Transfer For Refubishment", "Transfer Device For Refurbishment"]
@@ -60,12 +71,16 @@ class RefurbOrder(Document):
         return final_data
     
     def validate(self):
+        manufacturing = frappe.db.get_value("Stock Entry",{"docstatus":1,"stock_entry_type":"Manufacture", "refurb_order":self.name}, "name" )
+        if manufacturing:
+            frappe.throw("Changes Not Allowed After Manufacturing Entry.")
         if not self.cost:
             self.get_cost()
         if not self.task_created:
             self.create_tasks()
         if not self.fg_serial_no:
             self.fg_serial_no = self.serial_no + " - FG"
+        
     
     def get_cost(self):
         if self.has_serial_no:

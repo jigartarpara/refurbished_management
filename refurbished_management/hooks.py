@@ -141,6 +141,9 @@ after_migrate = "refurbished_management.custom_field.setup_custom_fields"
 doc_events = {
 	"Purchase Receipt": {
 		"on_submit": "refurbished_management.override.purchase_receipt.on_submit",
+	},
+    "Stock Entry": {
+		"on_submit": "refurbished_management.override.stock_entry.on_submit",
 	}
 }
 
